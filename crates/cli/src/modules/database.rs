@@ -5,7 +5,6 @@
  */
 
 use std::collections::HashMap;
-
 use prettytable::{Attr, Cell, Row, Table};
 use reqwest::Method;
 use serde_json::Value;
@@ -111,6 +110,12 @@ impl ServerCommands {
                     results.len(),
                     if results.len() == 1 { "" } else { "s" }
                 );
+            }
+            ServerCommands::Healthcheck { check} => {
+                client
+                    .http_request::<Value, String>(Method::GET, format!("/healthz/{:?}", check.unwrap_or("ready".to_string())).as_str(), None)
+                    .await;
+                eprintln!("Success.");
             }
         }
     }

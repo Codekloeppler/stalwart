@@ -3,7 +3,6 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only OR LicenseRef-SEL
  */
-
 use super::dkim::Algorithm;
 use clap::{Parser, Subcommand, ValueEnum};
 use jmap_client::client::Credentials;
@@ -25,6 +24,8 @@ pub struct Cli {
     /// Connection timeout in seconds
     #[clap(short, long)]
     pub timeout: Option<u64>,
+    #[clap(short, long)]
+    pub anonymous: bool,
 }
 
 #[derive(Subcommand)]
@@ -449,6 +450,11 @@ pub enum ServerCommands {
     ListConfig {
         /// Prefix to filter configuration entries by
         prefix: Option<String>,
+    },
+
+    /// Perform Healthcheck
+    Healthcheck {
+        check: Option<String>,
     },
 }
 
