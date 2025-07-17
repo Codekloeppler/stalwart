@@ -24,6 +24,7 @@ pub struct Cli {
     /// Connection timeout in seconds
     #[clap(short, long)]
     pub timeout: Option<u64>,
+    /// Do not ask for credentials
     #[clap(short, long)]
     pub anonymous: bool,
 }
@@ -454,7 +455,8 @@ pub enum ServerCommands {
 
     /// Perform Healthcheck
     Healthcheck {
-        check: Option<String>,
+        /// Status `ready` (default) or `live` to check for
+        check: Option<String>
     },
 }
 

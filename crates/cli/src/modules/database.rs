@@ -111,9 +111,18 @@ impl ServerCommands {
                     if results.len() == 1 { "" } else { "s" }
                 );
             }
-            ServerCommands::Healthcheck { check} => {
+            ServerCommands::Healthcheck { check } => {
+                let request_base: String = "healthz".to_owned();
+                let default_check: String = "ready".to_owned();
+                let request: String;
+                if check.is_some() {
+                    request = format!("/{request_base}/{}", check.unwrap());
+                } else {
+                    request = format!("/{request_base}/{default_check}");
+                }
+
                 client
-                    .http_request::<Value, String>(Method::GET, format!("/healthz/{:?}", check.unwrap_or("ready".to_string())).as_str(), None)
+                    .http_request::<String, Value>(Method::GET, &request, None)
                     .await;
                 eprintln!("Success.");
             }
